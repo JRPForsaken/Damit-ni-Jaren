@@ -74,3 +74,33 @@ LOG_FILE = 'clothing_sorter.log'
 # Performance
 MAX_WORKERS = 4  # Number of parallel workers for processing
 CACHE_FEATURES = True  # Cache extracted features to speed up re-runs
+
+# Path Caching
+CACHE_FILE = '.clothing_sorter_cache.json'  # File to store last used paths
+SAVE_LAST_PATHS = True  # Save last used input/output paths
+
+# Advanced AI Models
+AVAILABLE_MODELS = {
+    'resnet50': {
+        'name': 'ResNet50 (Fast)',
+        'feature_dim': 2048,
+        'speed': 'fast',
+        'accuracy': 'good',
+        'description': 'Balanced speed and accuracy - recommended for most users'
+    },
+    'efficientnet_b7': {
+        'name': 'EfficientNet-B7 (Accurate)',
+        'feature_dim': 2560,
+        'speed': 'slow',
+        'accuracy': 'excellent',
+        'description': 'Slower but more accurate - best for professional use'
+    },
+    'resnet18': {
+        'name': 'ResNet18 (Very Fast)',
+        'feature_dim': 512,
+        'speed': 'very_fast',
+        'accuracy': 'moderate',
+        'description': 'Fastest option - good for quick sorting of large batches'
+    }
+}
+DEFAULT_MODEL = 'resnet50'  # Default model for new users

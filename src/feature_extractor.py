@@ -66,8 +66,13 @@ class FeatureExtractor:
         elif self.model_name == 'efficientnet_b0':
             model = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.IMAGENET1K_V1)
             model.classifier = nn.Identity()
+        elif self.model_name == 'efficientnet_b7':
+            print("Loading EfficientNet-B7 (this may take a moment, ~255MB download)...")
+            model = models.efficientnet_b7(weights=models.EfficientNet_B7_Weights.IMAGENET1K_V1)
+            model.classifier = nn.Identity()
         else:
             # Default to ResNet50
+            print(f"Unknown model '{self.model_name}', defaulting to ResNet50")
             model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
             model = nn.Sequential(*list(model.children())[:-1])
         

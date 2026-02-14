@@ -56,6 +56,10 @@ class SimilarityMatcher:
         # Distance = 1 - similarity
         eps = 1 - self.similarity_threshold
         
+        # Ensure eps is valid (must be > 0)
+        if eps <= 0:
+            eps = 0.01  # Use small value for very high similarity threshold
+        
         # Apply DBSCAN
         clustering = DBSCAN(
             eps=eps,

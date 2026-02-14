@@ -16,6 +16,7 @@ from src.classifier import ClothingClassifier
 from src.similarity_matcher import SimilarityMatcher
 from src.organizer import FileOrganizer
 from src.report_generator import ReportGenerator
+from src.path_cache import PathCache
 import config
 
 
@@ -26,21 +27,32 @@ class ClothingSorterGUI:
         """Initialize the GUI"""
         self.root = root
         self.root.title("AI Clothing Photo Sorter")
-        self.root.geometry("800x700")
+        self.root.geometry("850x750")
         self.root.resizable(True, True)
         
+        # Initialize path cache
+        self.path_cache = PathCache()
+        
         # Variables
-        self.input_folder = tk.StringVar()
-        self.output_folder = tk.StringVar(value=config.OUTPUT_FOLDER_NAME)
-        self.similarity_threshold = tk.DoubleVar(value=config.SIMILARITY_THRESHOLD)
-        self.clustering_method = tk.StringVar(value=config.CLUSTERING_METHOD)
+        self.input_folder = tk.StringVar(value=self.path_cache.get_last_input_folder())
+        self.output_folder = tk.StringVar(value=self.path_cache.get_last_output_folder() or config.OUTPUT_FOLDER_NAME)
+        self.similarity_threshold = tk.DoubleVar(value=self.path_cache.get_last_similarity_threshold())
+        self.clustering_method = tk.StringVar(value=self.path_cache.get_last_clustering_method())
+        self.ai_model = tk.StringVar(value=self.path_cache.get_last_model())
         self.use_gpu = tk.BooleanVar(value=config.USE_GPU)
         self.copy_files = tk.BooleanVar(value=config.COPY_FILES)
         
         self.is_processing = False
+        self.cancel_event = threading.Event()
         
         # Setup UI
         self.setup_ui()
+        
+        # Log cached paths if available
+        if self.input_folder.get():
+            self.log(f"📂 Loaded last input folder: {self.input_folder.get()}")
+        if self.output_folder.get() and self.output_folder.get() != config.OUTPUT_FOLDER_NAME:
+            self.log(f"📁 Loaded last output folder: {self.output_folder.get()}")
         
     def setup_ui(self):
         """Setup the user interface"""
@@ -117,6 +129,35 @@ class ClothingSorterGUI:
         )
         threshold_scale.pack(side=tk.LEFT, padx=10)
         tk.Label(threshold_frame, textvariable=self.similarity_threshold).pack(side=tk.LEFT)
+        
+        # AI Model selection
+        model_frame = tk.Frame(settings_frame)
+        model_frame.pack(fill=tk.X, pady=5)
+        
+        tk.Label(model_frame, text="AI Model:", width=20, anchor='w').pack(side=tk.LEFT)
+        
+        # Create model options with descriptions
+        model_options = [f"{config.AVAILABLE_MODELS[k]['name']}" for k in config.AVAILABLE_MODELS.keys()]
+        model_combo = ttk.Combobox(
+            model_frame,
+            textvariable=self.ai_model,
+            values=list(config.AVAILABLE_MODELS.keys()),
+            state='readonly',
+            width=20
+        )
+        model_combo.pack(side=tk.LEFT, padx=10)
+        
+        # Set display value
+        if self.ai_model.get() in config.AVAILABLE_MODELS:
+            model_combo.set(self.ai_model.get())
+        
+        # Model info label
+        self.model_info_label = tk.Label(model_frame, text="", fg="gray", font=("Arial", 8))
+        self.model_info_label.pack(side=tk.LEFT, padx=10)
+        self.update_model_info()
+        
+        # Bind model selection change
+        model_combo.bind('<<ComboboxSelected>>', lambda e: self.update_model_info())
         
         # Clustering method
         method_frame = tk.Frame(settings_frame)
@@ -209,18 +250,29 @@ class ClothingSorterGUI:
         )
         clear_btn.pack(side=tk.RIGHT)
         
+    def update_model_info(self):
+        """Update model information label"""
+        model = self.ai_model.get()
+        if model in config.AVAILABLE_MODELS:
+            info = config.AVAILABLE_MODELS[model]
+            self.model_info_label.config(text=f"({info['speed']}, {info['accuracy']} accuracy)")
+    
     def browse_input_folder(self):
         """Browse for input folder"""
-        folder = filedialog.askdirectory(title="Select Input Folder")
+        initial_dir = self.input_folder.get() if self.input_folder.get() else None
+        folder = filedialog.askdirectory(title="Select Input Folder", initialdir=initial_dir)
         if folder:
             self.input_folder.set(folder)
+            self.path_cache.save_input_folder(folder)
             self.log(f"Selected input folder: {folder}")
     
     def browse_output_folder(self):
         """Browse for output folder"""
-        folder = filedialog.askdirectory(title="Select Output Folder")
+        initial_dir = self.output_folder.get() if self.output_folder.get() else None
+        folder = filedialog.askdirectory(title="Select Output Folder", initialdir=initial_dir)
         if folder:
             self.output_folder.set(folder)
+            self.path_cache.save_output_folder(folder)
             self.log(f"Selected output folder: {folder}")
     
     def log(self, message):
@@ -288,8 +340,8 @@ class ClothingSorterGUI:
                 return
             
             # Step 2: Extract features
-            self.log("STEP 2: Extracting AI features...")
-            extractor = FeatureExtractor(use_gpu=self.use_gpu.get())
+            self.log(f"STEP 2: Extracting AI features using {config.AVAILABLE_MODELS[self.ai_model.get()]['name']}...")
+            extractor = FeatureExtractor(model_name=self.ai_model.get(), use_gpu=self.use_gpu.get())
             image_paths, features = extractor.process_image_files_batch(image_paths)
             self.log(f"✅ Extracted features from {len(image_paths)} images\n")
             
@@ -356,6 +408,15 @@ class ClothingSorterGUI:
             )
             
             self.log(f"✅ Reports generated\n")
+            
+            # Save settings to cache
+            self.path_cache.save_all(
+                input_folder=self.input_folder.get(),
+                output_folder=self.output_folder.get(),
+                model=self.ai_model.get(),
+                similarity_threshold=self.similarity_threshold.get(),
+                clustering_method=self.clustering_method.get()
+            )
             
             # Summary
             self.log("="*60)

@@ -11,6 +11,7 @@ from .classifier import ClothingClassifier
 from .similarity_matcher import SimilarityMatcher
 from .organizer import FileOrganizer
 from .report_generator import ReportGenerator
+from .path_cache import PathCache
 
 __all__ = [
     'ImageProcessor',
@@ -18,5 +19,6 @@ __all__ = [
     'ClothingClassifier',
     'SimilarityMatcher',
     'FileOrganizer',
-    'ReportGenerator'
+    'ReportGenerator',
+    'PathCache'
 ]
