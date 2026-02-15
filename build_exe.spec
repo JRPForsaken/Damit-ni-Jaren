@@ -73,7 +73,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='icon.ico',  # Add your icon here if available
 )
 
 # Optional: Create a distribution folder

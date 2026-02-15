@@ -29,7 +29,7 @@ Write-Host "Done."
 
 Write-Host ""
 Write-Host "[2/5] Running PyInstaller..."
-pyinstaller build_exe.spec --noconfirm
+python -m PyInstaller build_exe.spec --noconfirm
 if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: PyInstaller build failed"
     Read-Host "Press Enter to exit"
@@ -40,7 +40,7 @@ Write-Host "Done."
 Write-Host ""
 Write-Host "[3/5] Build output created in: dist\AI_Clothing_Sorter\"
 if (Test-Path "dist\AI_Clothing_Sorter\AI_Clothing_Sorter.exe") {
-    Write-Host "✓ Successfully created: AI_Clothing_Sorter.exe"
+    Write-Host "Successfully created: AI_Clothing_Sorter.exe"
 }
 
 Write-Host ""
@@ -65,7 +65,7 @@ Write-Host "NOTE: First run will download PyTorch models (~2-3 GB)"
 Write-Host "      Place in Documents/ai_clothing_models/ if pre-downloading"
 Write-Host "============================================"
 Write-Host ""
-Write-Host "✓ Build complete!"
+Write-Host "Build complete!"
 Write-Host ""
 
 # Get file sizes
