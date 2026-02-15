@@ -23,38 +23,90 @@ SIMILARITY_THRESHOLD = 0.85  # Cosine similarity threshold for grouping same ite
 MIN_CLUSTER_SIZE = 2  # Minimum images to form a cluster
 CLUSTERING_METHOD = 'dbscan'  # 'dbscan' or 'kmeans'
 
-# Clothing Categories
+# Clothing Categories - Philippine Context (Common Types)
 CLOTHING_TYPES = [
-    'shirt',
-    'pants',
-    'dress',
-    'skirt',
-    'jacket',
-    'coat',
-    'sweater',
-    'shorts',
-    'jeans',
-    'blouse',
-    't-shirt',
-    'hoodie',
-    'suit',
+    'shirt',          # Most common - casual/formal shirts
+    'polo',           # Very popular in Philippines
+    't-shirt',        # Everyday wear
+    'blouse',         # Women's casual/formal
+    'pants',          # Trousers
+    'jeans',          # Denim pants
+    'shorts',         # Short pants
+    'skirt',          # Women's bottoms
+    'dress',          # One-piece dress
+    'long_dress',     # Maxi-style dress
+    'short_dress',    # Mini-style dress
+    'romper',         # Casual one-piece
+    'jacket',         # Light jacket/blazer
+    'cardigan',       # Sweater cardigan
+    'sweater',        # Pullover sweater
+    'hoodie',         # Hood sweater
+    'vest',           # Sleeveless shirt
+    'tank_top',       # Sleeveless casual
+    'sando',          # Undershirt/tank top (Filipino term)
+    'barong',         # Traditional formal shirt (Philippines)
+    'terno',          # Formal dress ensemble (Philippines)
+    'duster',         # Long light cover-up
+    'shawl',          # Wrap/shawl
+    'kimono',         # Asian casual wear
+    'suit',           # Formal suit
+    'coat',           # Heavy outer wear
+    'leggings',       # Tight pants
+    'bermuda',        # Knee-length shorts
+    'cargo',          # Multi-pocket pants/shorts
+    'other'           # Unclassified
+]
+
+# Clothing Patterns
+CLOTHING_PATTERNS = [
+    'solid',
+    'striped',
+    'checked',
+    'plaid',
+    'floral',
+    'polka_dots',
+    'paisley',
+    'geometric',
+    'abstract',
+    'gradient',
+    'tie_dye',
+    'embroidered',
+    'printed',
     'other'
 ]
 
-# Color Categories
+# Clothing Attributes (Size/Length)
+CLOTHING_ATTRIBUTES = [
+    'short_sleeve',
+    'long_sleeve',
+    'sleeveless',
+    'three_quarter',
+    'cap_sleeve',
+    'full_length',
+    'cropped',
+    'above_knee',
+    'below_knee',
+    'ankle_length',
+    'regular_fit',
+    'slim_fit',
+    'loose_fit',
+    'oversized',
+    'tailored'
+]
+
+# Color Categories - Improved for accuracy
 COLOR_CATEGORIES = [
     'red',
-    'blue',
-    'green',
+    'orange', 
     'yellow',
+    'green',
+    'blue',
+    'purple',
+    'pink',
+    'brown',
     'black',
     'white',
-    'gray',
-    'brown',
-    'pink',
-    'purple',
-    'orange',
-    'multicolor'
+    'gray'
 ]
 
 # Output Settings

@@ -1,36 +1,18 @@
-# AI Clothing Photo Sorter - Implementation TODO
+# TODO - Enhanced AI Clothing Sorter
 
-## Phase 1: Core Infrastructure ✅
-- [x] Create requirements.txt
-- [x] Create config.py
-- [x] Create project structure (src/ directory)
-- [x] Create README.md
+## Phase 1: Settings Caching Enhancement
+- [ ] 1.1 Update `config.py` - Add more clothing types (polo, tank_top, leggings, cardigan, vest, romper, jumpsuit, etc.)
+- [ ] 1.2 Update `src/path_cache.py` - Add more cached settings (use_gpu, copy_files)
+- [ ] 1.3 Update `gui.py` - Load cached settings on startup
 
-## Phase 2: Image Processing Module ✅
-- [x] Create src/__init__.py
-- [x] Create src/image_processor.py
+## Phase 2: New Detection Modules
+- [ ] 2.1 Create `src/pattern_detector.py` - Pattern detection module (stripes, checks, floral, solid, etc.)
+- [ ] 2.2 Create `src/size_detector.py` - Size/aspect ratio detection module
 
-## Phase 3: AI Feature Extraction ✅
-- [x] Create src/feature_extractor.py
+## Phase 3: Enhanced Classification
+- [ ] 3.1 Update `src/classifier.py` - Improve classification with pattern and size detection
+- [ ] 3.2 Update `src/similarity_matcher.py` - Enhanced sorting algorithm using pattern, size, looks
 
-## Phase 4: Classification & Clustering ✅
-- [x] Create src/classifier.py
-- [x] Create src/similarity_matcher.py
-
-## Phase 5: Organization & Output ✅
-- [x] Create src/organizer.py
-- [x] Create src/report_generator.py
-
-## Phase 6: Main Application ✅
-- [x] Create main.py (CLI version)
-
-## Phase 7: GUI Implementation ✅
-- [x] Create gui.py (Tkinter-based GUI)
-
-## Phase 8: Testing & Documentation ✅
-- [x] Update README.md with usage instructions
-- [x] Test with sample images
-
-## 🎉 ALL PHASES COMPLETED! 🎉
-
-The AI Clothing Photo Sorter application is now ready to use!
+## Phase 4: Integration
+- [ ] 4.1 Update `gui.py` - Integrate new pattern and size detection
+- [ ] 4.2 Test and verify all changes work together

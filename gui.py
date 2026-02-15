@@ -33,14 +33,14 @@ class ClothingSorterGUI:
         # Initialize path cache
         self.path_cache = PathCache()
         
-        # Variables
+        # Variables - load from cache for convenience
         self.input_folder = tk.StringVar(value=self.path_cache.get_last_input_folder())
         self.output_folder = tk.StringVar(value=self.path_cache.get_last_output_folder() or config.OUTPUT_FOLDER_NAME)
         self.similarity_threshold = tk.DoubleVar(value=self.path_cache.get_last_similarity_threshold())
         self.clustering_method = tk.StringVar(value=self.path_cache.get_last_clustering_method())
         self.ai_model = tk.StringVar(value=self.path_cache.get_last_model())
-        self.use_gpu = tk.BooleanVar(value=config.USE_GPU)
-        self.copy_files = tk.BooleanVar(value=config.COPY_FILES)
+        self.use_gpu = tk.BooleanVar(value=self.path_cache.get_last_use_gpu())
+        self.copy_files = tk.BooleanVar(value=self.path_cache.get_last_copy_files())
         
         self.is_processing = False
         self.cancel_event = threading.Event()
@@ -409,13 +409,15 @@ class ClothingSorterGUI:
             
             self.log(f"✅ Reports generated\n")
             
-            # Save settings to cache
+            # Save all settings to cache for convenience
             self.path_cache.save_all(
                 input_folder=self.input_folder.get(),
                 output_folder=self.output_folder.get(),
                 model=self.ai_model.get(),
                 similarity_threshold=self.similarity_threshold.get(),
-                clustering_method=self.clustering_method.get()
+                clustering_method=self.clustering_method.get(),
+                use_gpu=self.use_gpu.get(),
+                copy_files=self.copy_files.get()
             )
             
             # Summary
