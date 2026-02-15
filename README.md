@@ -91,8 +91,8 @@ sorted_clothes/
 
 ### Filename Format
 
-- type_color_g###_v#.ext (multi-angle items)
-- type_color_id.ext (single items)
+- `type_color_g###_v#.ext` (multi-angle items)
+- `type_color_id.ext` (single items)
 
 ---
 
